@@ -70,3 +70,10 @@ atlassian*
 /generated/*
 !/generated/.htaccess
 .DS_Store
+/var
+0,
+1
+1,
+.editorconfig
+.htaccess
+.htaccess.sample
