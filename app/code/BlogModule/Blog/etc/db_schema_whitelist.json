@@ -12,7 +12,7 @@
         },
         "constraint": {
             "PRIMARY": true,
-            "BLOGMODULE_BLOG_PAGE_POST_PAGE_ID_STORE_STORE_ID": true
+            "BLOGMODULE_BLOG_PAGE_POST_PAGE_ID_CMS_PAGE_PAGE_ID": true
         }
     }
 }
