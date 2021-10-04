@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace BlogModule\Blog\Observer;
 
-use BlogModule\Blog\Api\Data\PostInterface;
-use BlogModule\Blog\Api\PostManagementInterface;
 use BlogModule\Blog\Api\PostRepositoryInterface;
 use BlogModule\Blog\Model\Post;
 use Magento\Cms\Api\Data\PageInterface;
