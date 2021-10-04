@@ -5,29 +5,30 @@ declare(strict_types=1);
 namespace BlogModule\Blog\Observer;
 
 use BlogModule\Blog\Api\PostRepositoryInterface;
-use BlogModule\Blog\Model\Post;
-use Magento\Cms\Api\Data\PageInterface;
 use Magento\Cms\Model\Page;
+use Magento\Cms\Model\ResourceModel\Page\Collection;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
+use BlogModule\Blog\Model\ResourseModel\Post\Collection as PostCollection;
+use BlogModule\Blog\Model\ResourseModel\Post\CollectionFactory as PostCollectionFactory;
 
 /**
- * Class PageLoadAfter
+ * Class PageCollectionLoadAfter
  */
-class PageLoadAfter implements ObserverInterface
+class PageCollectionLoadAfter implements ObserverInterface
 {
     /**
-     * @var PostRepositoryInterface
+     * @var PostCollectionFactory
      */
-    private $postRepository;
+    private $postCollectionFactory;
 
     /**
      * PageSaveAfter constructor
-     * @param PostRepositoryInterface $postRepository
+     * @param PostCollectionFactory $postCollectionFactory
      */
-    public function __construct(PostRepositoryInterface $postRepository)
+    public function __construct(PostCollectionFactory $postCollectionFactory)
     {
-        $this->postRepository = $postRepository;
+        $this->postCollectionFactory = $postCollectionFactory;
     }
 
     /**
@@ -36,19 +37,31 @@ class PageLoadAfter implements ObserverInterface
     public function execute(Observer $observer)
     {
         /**
-         * @var PageInterface|Page $entity
+         * @var Collection $collection
          */
-        $entity = $observer->getEvent()->getObject();
+        $collection = $observer->getEvent()->getPageCollection();
+
+        $pageIds = [];
 
         /**
-         * @var Post $post
+         * @var Page $item
          */
-        $post = $this->postRepository->getByPageId($entity->getId());
+        foreach ($collection->getItems() as $item) {
+            $pageIds[] = $item->getId();
+        }
 
-        if ($post->getId()) {
-            $entity->setData('author', $post->getData('author'));
-            $entity->setData('is_post', $post->getData('is_post'));
-            $entity->setData('publish_date', $post->getData('publish_date'));
+        $postCollection = $this->postCollectionFactory->crate();
+        $postCollection->addFieldToFilter('page_id', ['in' => $pageIds]);
+
+        $items = $postCollection->getItems();
+
+        foreach ($postCollection->getItems() as $post) {
+            $page = $collection->getItemById($post->getPageId());
+            if ($page->getId()) {
+                $page->setData('author', $post->getData('author'));
+                $page->setData('is_post', $post->getData('is_post'));
+                $page->setData('published_date', $post->getData('published_date'));
+            }
         }
     }
 }
