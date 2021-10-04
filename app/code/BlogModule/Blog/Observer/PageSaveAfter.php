@@ -45,20 +45,11 @@ class PageSaveAfter implements ObserverInterface
          */
         $post = $this->postManagement->getEmptyObject();
 
-//        var_dump($data['author']);
-//        var_dump($data['is_post']);
-//        var_dump($data['publish_date']);
-//        var_dump($data['page_id']);
-//        die();
-//        $post->setData('author', $data['author']);
-//        $post->setData('is_post', $data['is_post']);
-//        $post->setData('publish_date', $data['publish_date']);
-//        $post->setData('page_id', $data['page_id']);
 
-        $post->setData('author', "TEXT11");
-        $post->setData('is_post', "1");
-        $post->setData('publish_date', "2020-04-09");
-        $post->setData('page_id', "7");
+        $post->setData('author', $data['author']);
+        $post->setData('is_post', $data['is_post']);
+        $post->setData('publish_date', $data['publish_date']);
+        $post->setData('page_id', $data['page_id']);
 
 
         $this->postManagement->save($post);
