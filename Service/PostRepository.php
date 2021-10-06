@@ -8,8 +8,11 @@ use BlogModule\Blog\Api\PostRepositoryInterface;
 use BlogModule\Blog\Model\Post;
 use BlogModule\Blog\Model\ResourseModel\Post as PostResource;
 use BlogModule\Blog\Model\ResourseModel\Post\Collection as PostCollection;
+use BlogModule\Blog\Model\ResourseModel\Post\CollectionFactory as PostCollectionFactory;
 use Magento\Cms\Api\PageRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Cms\Api\Data\PageSearchResultsInterface;
 
 /**
  * Class PostRepository
@@ -33,16 +36,10 @@ class PostRepository implements PostRepositoryInterface
      */
     private $postManagement;
 
-
     /**
-     * @var PostRepositoryInterface
+     * @var postCollectionFactory
      */
-    private $postRepository;
-
-    /**
-     * @var PostCollection
-     */
-    private $postCollection;
+    private $postCollectionFactory;
 
     /**
      * PostRepository
@@ -50,31 +47,44 @@ class PostRepository implements PostRepositoryInterface
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param PostResource $resource
      * @param PostManagementInterface $postManagement
-     * @param PostRepositoryInterface $postRepository
-     * @param PostCollection $postCollection
+     * @param PostCollectionFactory $postCollectionFactory
      */
     public function __construct(
         PageRepositoryInterface $pageRepository,
         SearchCriteriaBuilder   $searchCriteriaBuilder,
         PostResource            $resource,
         PostManagementInterface $postManagement,
-        PostRepositoryInterface $postRepository,
-        PostCollection $postCollection
+        PostCollectionFactory $postCollectionFactory
     )
     {
         $this->pageRepository = $pageRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->resource = $resource;
         $this->postManagement = $postManagement;
-        $this->postRepository = $postRepository;
-        $this->postCollection = $postCollection;
+        $this->postCollectionFactory = $postCollectionFactory;
     }
 
+    /**
+     * @return PageSearchResultsInterface
+     * @throws LocalizedException
+     */
     public function get()
     {
-        $searchCriteria = $this->searchCriteriaBuilder->create();
+        $postCollection = $this->postCollectionFactory->create();
+        $postCollection->addFieldToFilter('is_post', ['eq' => 1]);
 
-        $this->postRepository->getList();
+        $pageIds = [];
+
+        /**
+         * @var Post $post
+         */
+        foreach ($postCollection->getItems() as $post) {
+            $pageIds[] = $post->getData('page_id');
+        }
+
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('page_id', $pageIds, 'in')
+            ->create();
 
         return $this->pageRepository->getList($searchCriteria);
     }

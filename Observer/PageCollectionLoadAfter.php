@@ -50,7 +50,7 @@ class PageCollectionLoadAfter implements ObserverInterface
             $pageIds[] = $item->getId();
         }
 
-        $postCollection = $this->postCollectionFactory->crate();
+        $postCollection = $this->postCollectionFactory->create();
         $postCollection->addFieldToFilter('page_id', ['in' => $pageIds]);
 
         $items = $postCollection->getItems();
