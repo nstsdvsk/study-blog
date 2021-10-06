@@ -5,6 +5,7 @@ namespace BlogModule\Blog\ViewModel;
 use BlogModule\Blog\Service\PostRepository;
 use Magento\Cms\Api\Data\PageInterface;
 use Magento\Cms\Api\Data\PageSearchResultsInterface;
+use Magento\Cms\Model\Page;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
@@ -63,16 +64,16 @@ class Blog implements ArgumentInterface
         $result = [];
 
         /**
-         * @var PageInterface $post
+         * @var PageInterface|Page $post
          */
         foreach ($postsSearchResults->getItems() as $post) {
             $result[] = [
-                "id" => $post->getId(),
-                "title" => $post->getTitle(),
-                "url" => $this->url->getUrl($post->getIdentifier()),
-                "published_date" => $post->getCreationTime(),
-                "content" => $this->truncate(strip_tags($post->getContent()), 50),
-                "author" => "Some People"
+                'id' => $post->getId(),
+                'title' => $post->getTitle(),
+                'url' => $this->url->getUrl($post->getIdentifier()),
+                'published_date' => $post->getData('published_date'),
+                'content' => $this->truncate(strip_tags($post->getContent()), 50),
+                'author' => $post->getData('author')
             ];
         }
 
