@@ -60,7 +60,7 @@ class PageCollectionLoadAfter implements ObserverInterface
             if ($page->getId()) {
                 $page->setData('author', $post->getData('author'));
                 $page->setData('is_post', $post->getData('is_post'));
-                $page->setData('published_date', $post->getData('published_date'));
+                $page->setData('publish_date', $post->getData('publish_date'));
             }
         }
     }

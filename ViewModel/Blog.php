@@ -71,7 +71,7 @@ class Blog implements ArgumentInterface
                 'id' => $post->getId(),
                 'title' => $post->getTitle(),
                 'url' => $this->url->getUrl($post->getIdentifier()),
-                'published_date' => $post->getData('publish_date'),
+                'publish_date' => $post->getData('publish_date'),
                 'content' => $this->truncate(strip_tags($post->getContent()), 50),
                 'author' => $post->getData('author')
             ];
