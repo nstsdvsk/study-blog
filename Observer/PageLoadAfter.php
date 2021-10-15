@@ -12,7 +12,7 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
 
 /**
- * Class PageLoadAfter
+ * Class PageLoadAfter implements ObserverInterface
  */
 class PageLoadAfter implements ObserverInterface
 {

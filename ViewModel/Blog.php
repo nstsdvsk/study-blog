@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace BlogModule\Blog\ViewModel;
 
 use BlogModule\Blog\Service\PostRepository;
@@ -36,10 +37,11 @@ class Blog implements ArgumentInterface
      * @param PostRepository $postRepository
      * @param UrlInterface $url
      */
-    public function __construct(SerializerInterface $serializer,
-                                PostRepository $postRepository,
-                                UrlInterface $url)
-    {
+    public function __construct(
+        SerializerInterface $serializer,
+        PostRepository $postRepository,
+        UrlInterface $url
+    ) {
         $this->serializer = $serializer;
         $this->postRepository = $postRepository;
         $this->url = $url;
@@ -85,14 +87,12 @@ class Blog implements ArgumentInterface
      * @param int $maxWords
      * @return string
      */
-    private function truncate ($phrase, $maxWords) : string
+    private function truncate($phrase, $maxWords): string
     {
         $phraseArray = explode(' ', $phrase);
-        if (count($phraseArray) > $maxWords && $maxWords > 0)
-        {
-            $phrase = implode(' ', array_slice($phraseArray, 0, $maxWords)).'...';
+        if (count($phraseArray) > $maxWords && $maxWords > 0) {
+            $phrase = implode(' ', array_slice($phraseArray, 0, $maxWords)) . '...';
         }
         return $phrase;
     }
 }
-

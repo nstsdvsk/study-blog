@@ -55,8 +55,7 @@ class PostRepository implements PostRepositoryInterface
         PostResource            $resource,
         PostManagementInterface $postManagement,
         PostCollectionFactory $postCollectionFactory
-    )
-    {
+    ) {
         $this->pageRepository = $pageRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->resource = $resource;
