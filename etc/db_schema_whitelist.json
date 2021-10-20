@@ -5,7 +5,9 @@
             "page_id": true,
             "is_post": true,
             "author": true,
-            "publish_date": true
+            "publish_date": true,
+            "description": true,
+            "img_url": true
         },
         "index": {
             "BLOGMODULE_BLOG_PAGE_POST_PAGE_ID": true
@@ -13,6 +15,12 @@
         "constraint": {
             "PRIMARY": true,
             "BLOGMODULE_BLOG_PAGE_POST_PAGE_ID_CMS_PAGE_PAGE_ID": true
+        }
+    },
+    "blogmodule_blog_page_post_details": {
+        "column": {
+            "description": true,
+            "img_url": true
         }
     }
 }
